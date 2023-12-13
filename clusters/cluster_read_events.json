@@ -1,0 +1,24 @@
+{
+    "num_workers": 8,
+    "cluster_name": "Cluster Read Events",
+    "spark_version": "13.3.x-scala2.12",
+    "spark_conf": {},
+    "azure_attributes": {
+        "first_on_demand": 1,
+        "availability": "ON_DEMAND_AZURE",
+        "spot_bid_max_price": -1
+    },
+    "node_type_id": "Standard_DS3_v2",
+    "driver_node_type_id": "Standard_DS4_v2",
+    "ssh_public_keys": [],
+    "custom_tags": {},
+    "spark_env_vars": {},
+    "autotermination_minutes": 120,
+    "enable_elastic_disk": true,
+    "init_scripts": [],
+    "single_user_name": "robert.altmiller@databricks.com",
+    "enable_local_disk_encryption": false,
+    "data_security_mode": "LEGACY_SINGLE_USER_STANDARD",
+    "runtime_engine": "PHOTON",
+    "cluster_id": "1207-230301-px0j6xyn"
+}

@@ -1,0 +1,123 @@
+{
+  "name": "read_stream",
+  "email_notifications": {
+    "on_failure": [
+      "robert.altmiller@databricks.com"
+    ],
+    "no_alert_for_skipped_runs": true
+  },
+  "webhook_notifications": {},
+  "notification_settings": {
+    "no_alert_for_skipped_runs": true,
+    "no_alert_for_canceled_runs": true
+  },
+  "timeout_seconds": 0,
+  "max_concurrent_runs": 2,
+  "tasks": [
+    {
+      "task_key": "read_event_hub_events",
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Users/robert.altmiller@databricks.com/event_hub/read_event_hub",
+        "base_parameters": {
+          "mins_to_simulated_failure": "1"
+        },
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "1207-230301-px0j6xyn",
+      "max_retries": 0,
+      "min_retry_interval_millis": 300000,
+      "retry_on_timeout": false,
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "notification_settings": {
+        "no_alert_for_skipped_runs": false,
+        "no_alert_for_canceled_runs": false,
+        "alert_on_last_attempt": false
+      },
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "stopped_reading_events",
+      "depends_on": [
+        {
+          "task_key": "read_event_hub_events"
+        }
+      ],
+      "run_if": "AT_LEAST_ONE_FAILED",
+      "condition_task": {
+        "op": "EQUAL_TO",
+        "left": "{{tasks.[read_event_hub_events].result_state}}",
+        "right": "failed"
+      },
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "notification_settings": {
+        "no_alert_for_skipped_runs": false,
+        "no_alert_for_canceled_runs": false,
+        "alert_on_last_attempt": false
+      },
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "delete_checkpoint_folder",
+      "depends_on": [
+        {
+          "task_key": "stopped_reading_events",
+          "outcome": "true"
+        }
+      ],
+      "run_if": "ALL_SUCCESS",
+      "notebook_task": {
+        "notebook_path": "/Users/robert.altmiller@databricks.com/event_hub/delete_checkpoint_files",
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "1207-230301-px0j6xyn",
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "notification_settings": {
+        "no_alert_for_skipped_runs": false,
+        "no_alert_for_canceled_runs": false,
+        "alert_on_last_attempt": false
+      },
+      "webhook_notifications": {}
+    },
+    {
+      "task_key": "read_event_hub_events_2",
+      "depends_on": [
+        {
+          "task_key": "delete_checkpoint_folder"
+        },
+        {
+          "task_key": "read_event_hub_events"
+        }
+      ],
+      "run_if": "ALL_DONE",
+      "notebook_task": {
+        "notebook_path": "/Users/robert.altmiller@databricks.com/event_hub/read_event_hub",
+        "base_parameters": {
+          "mins_to_simulated_failure": "1000000000"
+        },
+        "source": "WORKSPACE"
+      },
+      "existing_cluster_id": "1207-230301-px0j6xyn",
+      "max_retries": 1,
+      "min_retry_interval_millis": 180000,
+      "retry_on_timeout": false,
+      "timeout_seconds": 0,
+      "email_notifications": {},
+      "notification_settings": {
+        "no_alert_for_skipped_runs": false,
+        "no_alert_for_canceled_runs": false,
+        "alert_on_last_attempt": false
+      },
+      "webhook_notifications": {}
+    }
+  ],
+  "queue": {
+    "enabled": true
+  },
+  "run_as": {
+    "user_name": "robert.altmiller@databricks.com"
+  }
+}

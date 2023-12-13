@@ -1,0 +1,2 @@
+azure-eventhub (Python Package)
+com.microsoft.azure:azure-eventhubs-spark_2.12:2.3.22 (Maven Package)
