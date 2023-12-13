@@ -1,5 +1,5 @@
 # eventhub_simulator
-Temperature + Humidity Event Hub Simulator with Random Forest ML Model Using Pyspark Machine Learning.
+Temperature + Humidity Event Hub Simulator with Random Forest ML Model Using Pyspark Machine Learning to Predict Rain Forecast.
 
 ## Features the Event Hub Simulator Repo
 - Workflow to stream events into an Azure event hub using a Databricks notebook.
